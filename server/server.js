@@ -2,21 +2,37 @@ const { ObjectID } = require('mongodb');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-var { mongoose } = require('./db/mongoose');
-var { Client } = require('./models/client');
+const { mongoose } = require('./db/mongoose');
+const { Client } = require('./models/client');
 
-var app = express();
+const app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
+app.use(function(req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+
+  // Request headers you wish to allow
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type'
+  );
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  // res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
+
 app.post('/client', (req, res) => {
-  var client = new Client({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    phone: req.body.phone,
-    email: req.body.email
-  });
+  var client = new Client(req.body);
 
   client.save().then(
     doc => {

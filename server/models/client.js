@@ -6,33 +6,19 @@ const bcrypt = require('bcryptjs');
 
 var ClientModel = new mongoose.Schema({
 	firstName: {
-		type: String,
-		required: true,
-		minlength: 2
+		type: String
 	},
 
 	lastName: {
-		type: String,
-		required: true,
-		minlength: 2
+		type: String
 	},
 
 	phone: {
-		type: String,
-		required: true,
-		minlength: 2
+		type: String
 	},
 
 	email: {
-		type: String,
-		required: true,
-		trim: true,
-		minlength: 1,
-		unique: 1,
-		validate: {
-			validator: validator.isEmail,
-			message: '{VALUE} is not a valid email'
-		}
+		type: String
 	}
 });
 
